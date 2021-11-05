@@ -234,18 +234,6 @@ summary(model18)
 ```
 
 
-```{r modelselection__GSI_with_just_singular}
-modelchroma <- lm(GSI_Value~Chroma_Gill, data = Thesis_Data)
-modelsat <- lm(GSI_Value~Sat_Gill, data = Thesis_Data)
-modeltint <- lm(GSI_Value~Tint_Gill, data = Thesis_Data)
-
-```
-
-
-
-
-
-
 ```{r anova_summary_chroma_Sat}
 anova(model10)
 summary(model10)
@@ -317,14 +305,42 @@ w19 <- ggplot(Thesis_Data, aes(Red_Coloration_Area, GSI_Value)) +
 ```
 
 
-```{r ggplot_GSI_Value}
-p1 <- ggplot(Thesis_Data, aes(Chroma_Gill, GSI_Value, colour = Sat_Gill)) + 
+
+
+```{r chroma_sat}
+p1c <- ggplot(Thesis_Data, aes(Chroma_Gill + Sat_Gill, GSI_Value)) + 
   geom_point(size=3) +
   geom_smooth(method="lm")
 
-p1
-
+p1c
 ```
+
+```{r chroma_tint}
+p1c <- ggplot(Thesis_Data, aes(Chroma_Gill + Tint_Gill, GSI_Value)) + 
+  geom_point(size=3) +
+  geom_smooth(method="lm")
+
+p1c
+```
+
+
+```{r ggplot_Chroma, fig.height=10, fig.width=6}
+wchroma <- ggplot(Thesis_Data, aes(Chroma_Gill, GSI_Value)) + 
+  geom_point() +
+  geom_smooth(method="lm")
+
+
+wtint <- ggplot(Thesis_Data, aes(Tint_Gill, GSI_Value)) + 
+  geom_point() +
+  geom_smooth(method="lm")
+
+wsat <- ggplot(Thesis_Data, aes(Sat_Gill, GSI_Value)) + 
+  geom_point() +
+  geom_smooth(method="lm")
+
+wchroma / wtint / wsat
+```
+
 
 
 Now to look at our second response variable: Body Condition Factor
@@ -561,6 +577,11 @@ Tint1 <- ggplot(Thesis_Data1,aes(Tint_Gill,Site_Location)) +
 
 Red_Coloration_Area1 / Saturation1 / Whiteness1 / Chroma1 / Tint1
 ```
+Note there 15 individuals collected from Dry Fork, Wall Branch Creek System and 16 from Rotary Park, Whites Creek System
+
+
+
+
 ```{r ggplots_Site_Location_Continued}
 GSI_Value1 <- ggplot(Thesis_Data1,aes(GSI_Value,Site_Location)) +
   geom_point() +
@@ -643,6 +664,7 @@ coef(fit.1)
 confint(fit.1)
 ```
 
+
 ```{r Binary_Site_GSI}
 ggplot(Site_GSI, aes(GSI_Value,Site_Location)) +
   geom_point() +
@@ -657,6 +679,18 @@ invlogit <- function(x) {1 / ( 1+exp(-x) ) }
 invlogit(coef(fit.1))
 ```
 INTERPRET
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ```{r read Site_BCF_Data}
@@ -703,7 +737,7 @@ ggplot(Site_BCF, aes(Body_Condition_Factor,Site_Location)) +
   labs (title="Raw Fit: 0=Rotary Park, 1=Dry Fork")
 ```
 
-
+***********************8
 ```{r read Season_GSI_Data}
 Season_GSI <- read.csv("Season_GSI.csv")
 ```
@@ -714,6 +748,8 @@ fit.3 <- glm(Season_Collected~GSI_Value, data=Season_GSI, binomial(link="logit")
 anova(fit.3)
 ```
 
+
+*******************
 ```{r fit.3_summary}
 summary(fit.3)
 ```
@@ -759,7 +795,7 @@ INTERPRET
 
 
 
-
+******************************
 ```{r read Season_BCF}
 Season_BCF <- read.csv("Season_BCF.csv")
 ```
@@ -811,113 +847,6 @@ invlogit(coef(fit.4))
 INTERPRET
 
 
-
-
-
-
-
-
-
-#***Whiteness and Body Condition 
-
-#****chroma and Sat GSI
-
-
-```{r ggplot_Whiteness_BCF}
-ggplot(data = Thesis_Data1, aes(x=Whiteness_Gill, y=Body_Condition_Factor)) +
-geom_point()+
-  xlab("Whiteness") +
-    ylab("Body Condition Factor") +
-theme_bw()+
-geom_smooth(method=lm)
-```
-
-```{r FitBCF_Whiteness}
-FitBCF_Whiteness <- lm(data= Thesis_Data1, Body_Condition_Factor~Whiteness_Gill)
-```
-
-```{r  autoplot_FitBCF_Whiteness}
-autoplot(FitBCF_Whiteness)
-```
-
-
-```{r FitBCF_Whiteness_anova}
-anova(FitBCF_Whiteness)
-summary(FitBCF_Whiteness)
-```
-
-
-```{r boxcox1}
-boxcox(FitBCF_Whiteness)
-```
-
-
-
-
-
-
-
-
-
-```{r ggplot_chroma_GSI}
-ggplot(data = Thesis_Data1, aes(x=Chroma_Gill, y=GSI_Value)) +
-geom_point()+
-  xlab("Chroma") +
-    ylab("Gonadosomatic Index (GSI)") +
-theme_bw()+
-geom_smooth(method=lm)
-```
-
-```{r Fitchroma_GSI}
-Fitchroma_GSI <- lm(data= Thesis_Data1, GSI_Value~Chroma_Gill)
-```
-
-```{r  autoplot_Fitchroma_GSI}
-autoplot(Fitchroma_GSI)
-```
-
-
-```{r Fitchroma_GSI_anova}
-anova(Fitchroma_GSI)
-summary(Fitchroma_GSI)
-```
-
-
-```{r boxcox2}
-boxcox(Fitchroma_GSI)
-```
-
-
-```{r ggplot_Sat_GSI}
-ggplot(data = Thesis_Data1, aes(x=Sat_Gill, y=GSI_Value)) +
-geom_point()+
-  xlab("Saturation") +
-    ylab("Gonadosomatic Index (GSI)") +
-theme_bw()+
-geom_smooth(method=lm)
-```
-
-
-
-```{r Fitsat_GSI}
-Fitsat_GSI <- lm(data= Thesis_Data1, GSI_Value~Sat_Gill)
-```
-
-```{r  autoplot_Fitsat_GSI}
-autoplot(Fitsat_GSI)
-```
-
-
-```{r Fitsat_GSI_anova}
-anova(Fitsat_GSI)
-summary(Fitsat_GSI)
-```
-
-
-```{r boxcox3}
-boxcox(Fitsat_GSI)
-```
-
 #The R output for the boxcox() function plots the maximum likelihood surface (the curve) together with a maximum likelihood-based 95% CI (Hector, 2015)
 
 #Helpful GLM component info from Hector, 2015 Ch8 
@@ -948,6 +877,30 @@ ggplot(sex, aes(Body_Condition_Factor, Sex)) +
   labs (title="Raw Fit: 0=Female, 1=Male")
 ```
 
+```{r sex_BCF}
+fit.5 <- glm(Sex~Body_Condition_Factor, data=sex, binomial(link="logit"))
+```
+
+```{r anova fit.5}
+anova(fit.5)
+summary(fit.5)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```{r Binary_Sex_GSI}
 ggplot(sex, aes(GSI_Value, Sex)) +
   geom_point() +
@@ -956,6 +909,22 @@ ggplot(sex, aes(GSI_Value, Sex)) +
   ylab ("Sex") +
   labs (title="Raw Fit: 0=Female, 1=Male")
 ```
+```{r sex_GSI}
+fit.6 <- glm(Sex~GSI_Value, data=sex, binomial(link="logit"))
+```
+
+```{r anova fit.6}
+anova(fit.6)
+summary(fit.6)
+```
+
+
+```{r  autoplot_Fitsex_GSI}
+autoplot(fit.6)
+```
+
+
+
 
 ```{r Binary_Sex_Whiteness1}
 ggplot(sex, aes(Whiteness_Gill,Sex)) +
@@ -967,6 +936,22 @@ ggplot(sex, aes(Whiteness_Gill,Sex)) +
 ```
 
 
+```{r sex_whit}
+fit.7 <- glm(Sex~Whiteness_Gill, data=sex, binomial(link="logit"))
+```
+
+```{r anova fit.7}
+anova(fit.7)
+summary(fit.7)
+```
+
+
+
+
+
+
+
+
 ```{r Binary_Sex_Sat1}
 ggplot(sex, aes(Sat_Gill,Sex)) +
   geom_point() +
@@ -975,6 +960,20 @@ ggplot(sex, aes(Sat_Gill,Sex)) +
   ylab ("Sex") +
   labs (title="Raw Fit: 0=Female, 1=Male")
 ```
+
+
+
+```{r sex_sat}
+fit.8 <- glm(Sex~Sat_Gill, data=sex, binomial(link="logit"))
+```
+
+```{r anova fit.8}
+anova(fit.8)
+summary(fit.8)
+```
+
+
+
 ```{r Binary_Sex_area1}
 ggplot(sex, aes(Red_Coloration_Area,Sex)) +
   geom_point() +
@@ -983,6 +982,33 @@ ggplot(sex, aes(Red_Coloration_Area,Sex)) +
   ylab ("Sex") +
   labs (title="Raw Fit: 0=Female, 1=Male")
 ```
+```{r sex_area}
+fit.9 <- glm(Sex~Red_Coloration_Area, data=sex, binomial(link="logit"))
+```
+
+```{r anova fit.9}
+anova(fit.9)
+summary(fit.9)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```{r Binary_Sex_chroma1}
 ggplot(sex, aes(Chroma_Gill,Sex)) +
@@ -991,6 +1017,16 @@ ggplot(sex, aes(Chroma_Gill,Sex)) +
   xlab ("Chroma") +
   ylab ("Sex") +
   labs (title="Raw Fit: 0=Female, 1=Male")
+```
+
+
+```{r sex_chrom}
+fit.10 <- glm(Sex~Chroma_Gill, data=sex, binomial(link="logit"))
+```
+
+```{r anova fit.10}
+anova(fit.10)
+summary(fit.10)
 ```
 
 ```{r Binary_Sex_tint1}
@@ -1002,319 +1038,29 @@ ggplot(sex, aes(Tint_Gill,Sex)) +
   labs (title="Raw Fit: 0=Female, 1=Male")
 ```
 
+```{r sex_tint}
+fit.11 <- glm(Sex~Tint_Gill, data=sex, binomial(link="logit"))
+```
+
+```{r anova fit.11}
+anova(fit.11)
+summary(fit.11)
+```
+
+```{r sex_domwave}
+fit.12 <- glm(Sex~DominantWavelength_Gill_nm, data=sex, binomial(link="logit"))
+```
+
+```{r anova fit.12}
+anova(fit.12)
+summary(fit.12)
+```
+
 
 NOTE 9 MALES VS. 18 FEMALES SEXED
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r fit.sex_whiteness}
-Sex_whiteness <- glm(Sex~Whiteness_Gill, data=sex, binomial(link="logit"))
-
-anova(Sex_whiteness)
-```
-
-
-
-
-
-
-```{r sex_whiteness_glm}
-sex_whiteness <- glm(Sex~Whiteness_Gill, data=sex, binomial(link="logit"))
-
-anova(sex_whiteness)
-```
-
-```{r sex_whiteness_summary1}
-summary(sex_whiteness)
-```
-
-```{r autoplot_sex_whiteness1}
-autoplot(sex_whiteness)
-
-```
-
-
-```{r binnedplot_sex_whiteness1}
-x <- predict(sex_whiteness)
-y <- resid(sex_whiteness)
-binnedplot(x, y)
-```
-
-```{r coeff_sex_whiteness1}
-coef(sex_whiteness)
-```
-
-```{r coefint_sex_whiteness1}
-confint(sex_whiteness)
-```
-
-```{r Binary_Sex_whiteness1}
-ggplot(sex, aes(Whiteness_Gill, Sex)) +
-  geom_point() +
-  geom_smooth(method="glm", method.args=list(family="binomial"(link="logit"))) +
-  xlab ("Whiteness") +
-  ylab ("Sex") +
-  labs (title="Raw Fit: 0=Female, 1=Male")
-```
-
-
-
-
-
-
-
-
-
-
-```{r sex_chroma}
-sex_chroma <- glm(Sex~Chroma_Gill, data=sex, binomial(link="logit"))
-
-anova(sex_chroma)
-```
-
-```{r sex_chroma_summary}
-summary(sex_chroma)
-```
-
-```{r autoplot_sex_chroma}
-autoplot(sex_chroma)
-
-```
-
-
-```{r binnedplot_sex_chroma}
-x <- predict(sex_chroma)
-y <- resid(sex_chroma)
-binnedplot(x, y)
-```
-
-```{r coeff_sex_chroma}
-coef(sex_chroma)
-```
-
-```{r coefint_sex_chroma}
-confint(sex_chroma)
-```
-
-```{r Binary_Sex_chroma}
-ggplot(sex, aes(Chroma_Gill, Sex)) +
-  geom_point() +
-  geom_smooth(method="glm", method.args=list(family="binomial"(link="logit"))) +
-  xlab ("Chroma") +
-  ylab ("Sex") +
-  labs (title="Raw Fit: 0=Female, 1=Male")
-```
-
-
-
-
-
-
-
-
-
-
-
-```{r Binary_Sex_area}
-ggplot(sex, aes(Red_Coloration_Area, Sex)) +
-  geom_point() +
-  geom_smooth(method="glm", method.args=list(family="binomial"(link="logit"))) +
-  xlab ("Red Coloration Area") +
-  ylab ("Sex") +
-  labs (title="Raw Fit: 0=Female, 1=Male")
-```
-
-
-
-
-```{r sex_area}
-sex_area <- glm(Sex~Red_Coloration_Area, data=sex, binomial(link="logit"))
-
-anova(sex_area)
-```
-
-```{r sex_area_summary}
-summary(sex_area)
-```
-
-```{r autoplot_sex_area}
-autoplot(sex_area)
-
-```
-
-
-```{r binnedplot_sex_area}
-x <- predict(sex_area)
-y <- resid(sex_area)
-binnedplot(x, y)
-```
-
-```{r coeff_sex_area}
-coef(sex_area)
-```
-
-```{r coefint_sex_area}
-confint(sex_area)
-```
-
-
-
-
-
-
-
-
-
-
-
-
-```{r sex_sat}
-sex_sat <- glm(Sex~Sat_Gill, data=sex, binomial(link="logit"))
-
-anova(sex_sat)
-```
-
-```{r sex_sat_summary}
-summary(sex_sat)
-```
-
-```{r autoplot_sex_sat}
-autoplot(sex_sat)
-
-```
-
-
-```{r binnedplot_sex_sat}
-x <- predict(sex_sat)
-y <- resid(sex_sat)
-binnedplot(x, y)
-```
-
-```{r coeff_sex_sat}
-coef(sex_sat)
-```
-
-```{r coefint_sex_sat}
-confint(sex_sat)
-```
-
-```{r Binary_Sex_sat}
-ggplot(sex, aes(Sat_Gill, Sex)) +
-  geom_point() +
-  geom_smooth(method="glm", method.args=list(family="binomial"(link="logit"))) +
-  xlab ("Saturation") +
-  ylab ("Sex") +
-  labs (title="Raw Fit: 0=Female, 1=Male")
-```
-
-
-
-
-
-
-
-
-```{r sex_tint}
-sex_tint <- glm(Sex~Tint_Gill, data=sex, binomial(link="logit"))
-
-anova(sex_tint)
-```
-
-```{r sex_tint_summary}
-summary(sex_tint)
-```
-
-```{r autoplot_sex_tint}
-autoplot(sex_tint)
-
-```
-
-
-```{r binnedplot_sex_tint}
-x <- predict(sex_tint)
-y <- resid(sex_tint)
-binnedplot(x, y)
-```
-
-```{r coeff_sex_tint}
-coef(sex_tint)
-```
-
-```{r coefint_sex_tint}
-confint(sex_tint)
-```
-
-```{r Binary_Sex_tint}
-ggplot(sex, aes(Tint_Gill, Sex)) +
-  geom_point() +
-  geom_smooth(method="glm", method.args=list(family="binomial"(link="logit"))) +
-  xlab ("Tint") +
-  ylab ("Sex") +
-  labs (title="Raw Fit: 0=Female, 1=Male")
-```
-
-
-```{r sex_whiteness}
-sex_whiteness <- glm(Sex~Whiteness_Gill, data=sex, binomial(link="logit"))
-
-anova(sex_whiteness)
-```
-
-```{r sex_whiteness_summary}
-summary(sex_whiteness)
-```
-
-```{r autoplot_sex_whiteness}
-autoplot(sex_whiteness)
-
-```
-
-
-```{r binnedplot_sex_whiteness}
-x <- predict(sex_whiteness)
-y <- resid(sex_whiteness)
-binnedplot(x, y)
-```
-
-```{r coeff_sex_whiteness}
-coef(sex_whiteness)
-```
-
-```{r coefint_sex_whiteness}
-confint(sex_whiteness)
-```
-
-```{r Binary_Sex_whiteness}
-ggplot(sex, aes(Whiteness_Gill, Sex)) +
-  geom_point() +
-  geom_smooth(method="glm", method.args=list(family="binomial"(link="logit"))) +
-  xlab ("Whiteness") +
-  ylab ("Sex") +
-  labs (title="Raw Fit: 0=Female, 1=Male")
-```
-
-
-
+Binary Data: Season
 
 
 
@@ -1485,7 +1231,7 @@ ggplot(season, aes(Tint_Gill, Season_Collected)) +
   labs (title="Raw Fit: 0=Non-breeding, 1=Breeding")
 ```
 
-NAAAAHHHHHH Don't USE!!!!!!!!!!!!!!!!!!!!1
+
 
 
 ```{r season_area}
@@ -1498,27 +1244,11 @@ anova(season_area)
 summary(season_area)
 ```
 
-```{r autoplot_season_area}
-autoplot(season_whiteness)
-
-```
 
 
-```{r binnedplot_season_area}
-x <- predict(season_area)
-y <- resid(season_area)
-binnedplot(x, y)
-```
 
-```{r coeff_season_area}
-coef(season_area)
-```
 
-```{r coefint_season_area}
-confint(season_area)
-```
-
-```{r Binary_Season_whiteness}
+```{r Binary_Season_area}
 ggplot(season, aes(Red_Coloration_Area, Season_Collected)) +
   geom_point() +
   geom_smooth(method="glm", method.args=list(family="binomial"(link="logit"))) +
@@ -1526,9 +1256,6 @@ ggplot(season, aes(Red_Coloration_Area, Season_Collected)) +
   ylab ("Season Collected") +
   labs (title="Raw Fit: 0=Non-breeding, 1=Breeding")
 ```
-
-
-NAH don's use !!!!!!!!!!!!!!!!!!!!!!
 
 
 
@@ -1559,25 +1286,7 @@ anova(site_whiteness)
 summary(site_whiteness)
 ```
 
-```{r autoplot_site_whiteness}
-autoplot(site_whiteness)
 
-```
-
-
-```{r binnedplot_site_whiteness}
-x <- predict(site_whiteness)
-y <- resid(site_whiteness)
-binnedplot(x, y)
-```
-
-```{r coeff_site_whiteness}
-coef(site_whiteness)
-```
-
-```{r coefint_site_whiteness}
-confint(site_whiteness)
-```
 
 ```{r Binary_Site_whiteness}
 ggplot(site, aes(Whiteness_Gill, Site_Location)) +
@@ -1601,25 +1310,7 @@ anova(site_sat)
 summary(site_sat)
 ```
 
-```{r autoplot_site_sat}
-autoplot(site_sat)
 
-```
-
-
-```{r binnedplot_site_sat}
-x <- predict(site_sat)
-y <- resid(site_sat)
-binnedplot(x, y)
-```
-
-```{r coeff_site_sat}
-coef(site_sat)
-```
-
-```{r coefint_site_sat}
-confint(site_sat)
-```
 
 ```{r Binary_Site_sat}
 ggplot(site, aes(Sat_Gill, Site_Location)) +
@@ -1629,6 +1320,7 @@ ggplot(site, aes(Sat_Gill, Site_Location)) +
   ylab ("Site") +
   labs (title="Raw Fit:  0=Rotary Park, 1=Dry Fork")
 ```
+
 
 
 
@@ -1644,25 +1336,7 @@ anova(site_chroma)
 summary(site_chroma)
 ```
 
-```{r autoplot_site_chroma}
-autoplot(site_chroma)
 
-```
-
-
-```{r binnedplot_site_chroma}
-x <- predict(site_chroma)
-y <- resid(site_chroma)
-binnedplot(x, y)
-```
-
-```{r coeff_site_chroma}
-coef(site_chroma)
-```
-
-```{r coefint_site_chroma}
-confint(site_chroma)
-```
 
 ```{r Binary_Site_chroma}
 ggplot(site, aes(Chroma_Gill, Site_Location)) +
@@ -1726,25 +1400,7 @@ anova(site_tint)
 summary(site_tint)
 ```
 
-```{r autoplot_site_tint}
-autoplot(site_tint)
 
-```
-
-
-```{r binnedplot_site_tint}
-x <- predict(site_tint)
-y <- resid(site_tint)
-binnedplot(x, y)
-```
-
-```{r coeff_site_tint}
-coef(site_tint)
-```
-
-```{r coefint_site_tint}
-confint(site_tint)
-```
 
 ```{r Binary_Site_tint}
 ggplot(site, aes(Tint_Gill, Site_Location)) +
