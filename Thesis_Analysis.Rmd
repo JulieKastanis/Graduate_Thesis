@@ -1410,3 +1410,67 @@ ggplot(site, aes(Tint_Gill, Site_Location)) +
   ylab ("Site") +
   labs (title="Raw Fit:  0=Rotary Park, 1=Dry Fork")
 ```
+
+
+```{r boxplot_season_tint}
+boxplot(Tint_Gill~Season_Collected, data=season)
+```
+
+```{r t-test season-tint}
+
+tint_t <- t.test(Tint_Gill ~ Season_Collected, data = season, var.equal = TRUE)
+
+tint_t
+```
+
+
+```{r boxplot_season_sat}
+boxplot(Sat_Gill~Season_Collected, data=season)
+```
+
+
+
+```{r t-test season-sat}
+
+sat_t <- t.test(Sat_Gill ~ Season_Collected, data = season, var.equal = TRUE)
+
+sat_t
+```
+
+```{r boxplot_season_chroma}
+boxplot(Chroma_Gill~Season_Collected, data=season)
+```
+
+
+```{r t-test season-chroma}
+
+chroma_t <- t.test(Chroma_Gill ~ Season_Collected, data = season, var.equal = TRUE)
+
+chroma_t
+```
+
+```{r boxplot_season_whiteness}
+boxplot(Whiteness_Gill~Season_Collected, data=season)
+```
+
+
+```{r t-test season-whiteness}
+
+whiteness_t <- t.test(Whiteness_Gill ~ Season_Collected, data = season, var.equal = TRUE)
+
+whiteness_t
+```
+
+
+```{r boxplot_season_area}
+boxplot(Red_Coloration_Area~Season_Collected, data=season)
+```
+
+
+```{r t-test season-area}
+
+area_t <- t.test(Red_Coloration_Area ~ Season_Collected, data = season, var.equal = TRUE)
+
+area_t
+```
+
