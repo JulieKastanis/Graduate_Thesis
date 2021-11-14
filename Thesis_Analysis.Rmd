@@ -1474,3 +1474,65 @@ area_t <- t.test(Red_Coloration_Area ~ Season_Collected, data = season, var.equa
 area_t
 ```
 
+```{r t-test sex-whiteness}
+
+whitenesssex_t <- t.test(Whiteness_Gill ~ Sex, data = sex, var.equal = TRUE)
+
+whitenesssex_t
+```
+
+
+```{r boxplot_sex_whiteness}
+boxplot(Whiteness_Gill~Sex, data=sex)
+```
+
+```{r t-test sex-chroma}
+
+chromasex_t <- t.test(Chroma_Gill ~ Sex, data = sex, var.equal = TRUE)
+
+chromasex_t
+```
+
+
+```{r boxplot_sex_chroma}
+boxplot(Chroma_Gill~Sex, data=sex)
+```
+
+```{r t-test sex-sat}
+
+satsex_t <- t.test(Sat_Gill ~ Sex, data = sex, var.equal = TRUE)
+
+satsex_t
+```
+
+
+```{r boxplot_sex_sat}
+boxplot(Sat_Gill~Sex, data=sex)
+```
+
+
+
+```{r t-test sex_tint}
+
+tintsex_t <- t.test(Tint_Gill ~ Sex, data = sex, var.equal = TRUE)
+
+tintsex_t
+```
+
+
+```{r boxplot_tint_sex}
+boxplot(Tint_Gill~Sex, data=sex)
+```
+
+
+```{r t-test sex_area}
+
+areasex_t <- t.test(Red_Coloration_Area ~ Sex, data = sex, var.equal = TRUE)
+
+areasex_t
+```
+
+
+```{r boxplot_sex_area}
+boxplot(Red_Coloration_Area~Sex, data=sex)
+```
